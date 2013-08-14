@@ -3,6 +3,8 @@ require 'bundler/setup'
 require 'sinatra'
 require 'haddock'
 
+Haddock::Password.diction = File.expand_path('../data/words', __FILE__)
+
 class HaddockAsAService < Sinatra::Base
   include Haddock
 
