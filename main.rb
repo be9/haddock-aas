@@ -9,11 +9,15 @@ class HaddockAsAService < Sinatra::Base
   include Haddock
 
   get '/' do
-    "Use GET #{request.url}password to generate password with default length (8) or GET #{request.url}password/LENGTH to customize length"
+    "Use GET #{request.url}password to generate password with default length (12) or GET #{request.url}password/LENGTH to customize length"
   end
 
   get '/password/?:length?' do
-    generate_password((params[:length] || 8).to_i)
+    begin
+      generate_password((params[:length] || 12).to_i)
+    rescue Haddock::Password::LengthError
+      [400, {}, "Invalid length (must be 8..31)"]
+    end
   end
 
   def generate_password(length)
